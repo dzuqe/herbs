@@ -1,9 +1,11 @@
+import math, strformat
+
 # complex number
-type Complex = ref object
+type Complex* = ref object
   a: cdouble # real
   b: cdouble # imaginary
 
-proc newComplex(r, i: cdouble): Complex =
+proc newComplex*(a, b: cdouble): Complex =
   ## make a new complex number
   return Complex(
     a: a,
@@ -28,15 +30,23 @@ proc `-`*(u, v: Complex): Complex =
 proc `*`*(u, v: Complex): Complex =
   ## multipy two complex numbers
   return Complex(
-    a: u.a*v.a - u.b*v.b,
-    b: u.a*v.b + u.b*v.a
+    a: (u.a*v.a) - (u.b*v.b),
+    b: (u.a*v.b) + (u.b*v.a)
   )
 
-proc squared*(u: Vector): Complex =
+proc pow2*(u: Complex): Complex =
+  # return the square of a complex number
   return Complex(
-    a: u.a**2 - u.b**2,
-    b: 2*x*y
+    a: pow(u.a, 2) - pow(u.b, 2),
+    b: 2 * u.a * u.b
   )
+
+proc `$`*(u: Complex): string =
+  return fmt"{u.a} + {u.b}i"
+
+
+proc absl*(u: Complex): cdouble =
+  return sqrt(pow(u.a, 2) + pow(u.b, 2))
 
 # associate, commute, distribute 
 # multiplicative inverse
